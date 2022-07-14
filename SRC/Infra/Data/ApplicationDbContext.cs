@@ -13,12 +13,12 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         //Product
-        builder.Entity<Product>().Property(p => p.Name).IsRequired();
+        builder.Entity<Product>().Property(p => p.Name).HasMaxLength(150).IsRequired();
         builder.Entity<Product>().Property(p => p.Description).HasMaxLength(255);
-        //builder.Entity<Product>().Property(p => p.Category).IsRequired();
+        builder.Entity<Product>().Property(p => p.CategoryId).IsRequired();
 
         //Category
-        builder.Entity<Category>().Property(c => c.Name).HasMaxLength(20).IsRequired();
+        builder.Entity<Category>().Property(c => c.Name).HasMaxLength(100).IsRequired();
         
     }
 
