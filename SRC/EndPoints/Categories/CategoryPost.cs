@@ -14,10 +14,11 @@ public class CategoryPost
     public static IResult Action([FromBody] CategoryRequest request, ApplicationDbContext context)
     {
         var category = new Category(request.Name, "test-created", "test-edited");
-        
-        if (!category.IsValid)
+
+        if (!category.IsValid) //IsValid = FluntMethod
         {
-            return Results.BadRequest(category.Notifications);
+            var error = category.Notifications.ToProblemDetails(); /*Extension Method : ProblemDetaiExtentions*/
+            return Results.ValidationProblem(error);
         }
 
         context.Categories.Add(category);

@@ -15,8 +15,8 @@ public class CategoryGetAll
     {
         var categories = context.Categories.ToList();
 
-        var response = categories.Select(c => new CategoryResponse { Name = c.Name, Active = c.Active, Id = c.Id});
-        context.SaveChanges();
+        var response = categories.Select(c => new CategoryResponse { Name = c.Name, Active = c.Active, Id = c.Id });
+                
         return Results.Ok(response);
     }
 
