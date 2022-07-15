@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using IWantApp.Domain.Products;
+using Flunt.Notifications;
 
 namespace IWantApp.Infra.Data;
 
@@ -19,6 +20,9 @@ public class ApplicationDbContext : DbContext
 
         //Category
         builder.Entity<Category>().Property(c => c.Name).HasMaxLength(100).IsRequired();
+
+        //Ignore
+        builder.Ignore<Notification>();
         
     }
 

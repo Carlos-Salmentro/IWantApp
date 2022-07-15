@@ -13,18 +13,16 @@ public class CategoryPost
 
     public static IResult Action([FromBody] CategoryRequest request, ApplicationDbContext context)
     {
-        var category = new Category(request.Name)
+        var category = new Category(request.Name, "test-created", "test-edited");
+        
+        if (!category.IsValid)
         {
-            Name = request.Name,
-            CreatedBy = "test",
-            CreatedOn = DateTime.Now,
-            EditedBy = "test",
-            EditedOn = DateTime.Now
-        };
-
+            return Results.BadRequest(category.Notifications);
+        }
 
         context.Categories.Add(category);
         context.SaveChanges();
+
         return Results.Created($"Template/{category.Id}", category.Name);
     }
 
