@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using IWantApp.Infra.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,17 +17,19 @@ public class EmployeePost
         var user = new IdentityUser { UserName = request.Email, Email = request.Email };
 
         var result = userManager.CreateAsync(user, request.Password).Result;
-        
+
         if (result != IdentityResult.Success)
-            return Results.BadRequest(result.Errors.FirstOrDefault());
+            return Results.ValidationProblem(result.Errors.ToProblemDetails());
 
-        var claimResult = userManager.AddClaimAsync(user, new Claim("EmployeeCode", request.Code)).Result;
+        var claimsList = new List<Claim>
+        {
+            new Claim("EmployeeCode", request.Code),
+            new Claim("Name", request.Name)
+        };
+            
+       var claimResult = userManager.AddClaimsAsync(user, claimsList).Result;
         if (!claimResult.Succeeded)
-            return Results.BadRequest(claimResult.Errors.First());
-
-        claimResult = userManager.AddClaimAsync(user, new Claim("Name", request.Name)).Result;
-        if (!claimResult.Succeeded)
-            return Results.BadRequest(claimResult.Errors.First());
+            return Results.ValidationProblem(claimResult.Errors.ToProblemDetails());
 
         return Results.Created($"Template/{user.Id}", user.Id);
     }

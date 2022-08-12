@@ -30,7 +30,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
-    
+builder.Services.AddScoped<QueryAllUsersWithClaimName>();
 
 
 var app = builder.Build();
@@ -50,6 +50,7 @@ app.MapMethods(CategoryEdit.Template, CategoryEdit.Methods, CategoryEdit.Handle)
 app.MapMethods(CategoryDelete.Template, CategoryDelete.Methods, CategoryDelete.Handle);
 
 app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
+app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 
 app.Run();
 
